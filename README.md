@@ -1,4 +1,4 @@
-# Cloudflare_DNS_Record_IP_Updater
+# AutoDNSUpdater
 
 A simple script that automatically fetches your public IPV4 address and updates DNS records on Cloudflare to ensure they are always synchronized. This repository provides a simple and efficient solution for maintaining up-to-date DNS configurations without manual intervention.
 
