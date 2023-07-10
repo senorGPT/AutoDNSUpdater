@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from typing import Dict
 
 from bin.logger import Logger, print_seperator, LogType
