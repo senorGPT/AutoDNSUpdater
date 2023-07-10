@@ -66,7 +66,7 @@ def update_dns_records(current_ip: str, logger: Logger):
     if not dns_records:
         logger.log('No Results Found', LogType.ERROR)
         return
-    logger.log(f'Cloudflare DNS Results Found : {len(dns_records)}', LogType.INFO)
+    logger.log(f'Cloudflare DNS Records Found : {len(dns_records)}', LogType.INFO)
 
     dns_records_updated = 0
     for dns_record_data in dns_records:
