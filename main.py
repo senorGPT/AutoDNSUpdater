@@ -9,7 +9,6 @@ from bin.dns_record import DNS_Record
 from config.config import APIs
 
 DATA = Path('data.txt')
-WRITE_TO_FILE = False
 
 
 def read_ip_from_file() -> str:
@@ -50,7 +49,6 @@ def get_current_ip(logger: Logger) -> str:
     if api_response['ip']:
         logger.log(f' : [{LogType.SUCCESS.name}]', None, prefix=False)
         logger.log(f'Current IP address is {api_response["ip"]}', LogType.INFO)
-        WRITE_TO_FILE = True
         return api_response['ip']
 
     logger.log(f' : [{LogType.ERROR.name}] - Response:\n{api_response}', None, prefix=False)
