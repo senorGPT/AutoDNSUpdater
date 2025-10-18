@@ -1,7 +1,7 @@
 from enum import Enum
 import datetime
 
-SEPERATOR_LENGTH = 60
+SEPARATOR_LENGTH = 60
 
 
 class LogType(Enum):
@@ -15,8 +15,10 @@ class Logger():
     def __init__(self):
         self.file = open('log.txt', 'a')
 
+
     def __del__(self):
         self.file.close()
+
 
     def get_datetime_stamp(self) -> str:
         """
@@ -25,17 +27,20 @@ class Logger():
         current_time = datetime.datetime.now()
         return current_time.strftime("%Y-%m-%d %H:%M:%S")
 
+
     def close(self) -> None:
         """
         close the opened file for reading.
         """
         self.file.close()
 
+
     def write_to_file(self, message: str) -> None:
         """
         write to file `message`.
         """
         self.file.write(f'[{self.get_datetime_stamp()}]: {message}')
+
 
     def log(self, message: str, target_log_type: LogType = LogType.INFO, end: bool = True, prefix: bool = False) -> None:
         """
@@ -59,8 +64,8 @@ class Logger():
             self.write_to_file(f'{final_message}')
 
 
-def print_seperator(seperator_length: int = SEPERATOR_LENGTH) -> None:
+def print_separator(separator_length: int = SEPARATOR_LENGTH) -> None:
     """
-    print a standard seperator, with a desired length of `seperator_length`.
+    print a standard separator, with a desired length of `separator_length`.
     """
-    print(f'{"-" * seperator_length}')
+    print(f'{"-" * separator_length}')

@@ -26,7 +26,7 @@ A simple script that automatically fetches your public IPV4 address and updates 
 * Edit & Configure `config/config.py`
 1. API_KEY : set to Cloudflare Global API Key (found at https://dash.cloudflare.com/profile under `API Tokens` > `Global API Token`)
 2. API_EMAIL : the email that is associated with your Cloudflare account
-3. ZONE_ID : the zone id for the target webiste (found at Cloudflare Overview website page, click on desired website, on the right side-bar at the bottom will be the `Zone Token`)
+3. ZONE_ID : the zone id for the target website (found at Cloudflare Overview website page, click on desired website, on the right side-bar at the bottom will be the `Zone Token`)
 4. RECORD_NAME : the respective name for the target DNS Record
 5. RECORD_TYPE : the respective type for the target DNS Record
 

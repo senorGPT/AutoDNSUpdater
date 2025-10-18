@@ -4,15 +4,15 @@ from typing import Dict
 class DNS_Record():
     def __init__(self, data: Dict = None):
         self.id = data['id']
-        self.zone_id = data['zone_id']
-        self.zone_name = data['zone_name']
         self.name = data['name']
         self.ip = data['content']
 
         self.json = data
 
+
     def __str__(self):
-        return f'Zone: {self.zone_name:<20} | \tName: {self.name:<30} |  \tIP: {self.ip:<30}'
+        return f'Name: {self.name:<30} |  \tIP: {self.ip:<30}'
+
 
     def update_ip(self, new_ip: str):
         """

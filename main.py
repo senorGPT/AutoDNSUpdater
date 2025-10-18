@@ -1,10 +1,42 @@
 #!/usr/bin/env python3
 
-from typing import Dict
+from typing import Optional, Dict
 
-from bin.logger import Logger, print_seperator, LogType
+from pathlib import Path
+
+from bin.logger import Logger, print_separator, LogType
 from bin.dns_record import DNS_Record
 from config.config import APIs
+
+DATA = Path('data.txt')
+WRITE_TO_FILE = False
+
+
+def read_ip_from_file() -> str:
+    """
+    Read the current IP address from the DATA file if it exists.
+    """
+
+    return DATA.read_text(encoding='utf-8').strip()
+
+
+def write_ip_to_file(ip: str) -> None:
+    """
+    Overwrite the DATA file with the given IP address.
+    """
+    DATA.write_text(ip, encoding='utf-8')
+
+
+def get_saved_ip(logger: Logger) -> Optional[str]:
+    """
+    Get the saved IP (if present).
+    """
+    if not DATA.exists():
+        return None
+
+    saved_ip = read_ip_from_file()
+    logger.log(f'Found IP saved data file & data - {saved_ip}')
+    return saved_ip
 
 
 def get_current_ip(logger: Logger) -> str:
@@ -18,6 +50,7 @@ def get_current_ip(logger: Logger) -> str:
     if api_response['ip']:
         logger.log(f' : [{LogType.SUCCESS.name}]', None, prefix=False)
         logger.log(f'Current IP address is {api_response["ip"]}', LogType.INFO)
+        WRITE_TO_FILE = True
         return api_response['ip']
 
     logger.log(f' : [{LogType.ERROR.name}] - Response:\n{api_response}', None, prefix=False)
@@ -62,9 +95,14 @@ def update_dns_records(current_ip: str, logger: Logger):
     matches `current_ip`.
     """
     api_response = APIs['cloudflare'].get_request()
+    # check if we got a bad response from cloudflare
+    if api_response is None or api_response['result'] is None:
+        logger.log(f'Bad api response from cloudflare: {api_response.get("result")}')
+        return
+
     dns_records = api_response['result']
 
-    print_seperator()
+    print_separator()
     if not dns_records:
         logger.log('No Results Found', LogType.ERROR)
         return
@@ -74,8 +112,8 @@ def update_dns_records(current_ip: str, logger: Logger):
     for dns_record_data in dns_records:
         dns_records_updated += process_dns_record(dns_record_data, current_ip, logger)
 
-    print_seperator()
-    logger.log(f'{dns_records_updated}/{len(dns_records)} DNS Records Updated')
+    print_separator()
+    logger.log(f'{dns_records_updated}/{len(dns_records)} DNS Records Updated to new IP {current_ip}')
 
 
 def init():
@@ -83,7 +121,18 @@ def init():
     init.
     """
     logger = Logger()
-    update_dns_records(get_current_ip(logger), logger)
+
+    saved_ip    = get_saved_ip(logger)
+    current_ip  = get_current_ip(logger)
+    # check if the saved ip matches the current ip
+    if saved_ip == current_ip:
+        logger.log(f'Saved IP ({saved_ip}) matches current IP ({current_ip}) - Skipping CloudFlare Requests')
+        return
+
+    update_dns_records(current_ip, logger)
+
+    logger.log(f'Saved IP to data.txt - {current_ip}')
+    write_ip_to_file(current_ip)
 
 
 if __name__ == '__main__':

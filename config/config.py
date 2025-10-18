@@ -2,11 +2,8 @@ from bin.api import API
 
 # Cloudflare API credentials
 API_KEY = 'api_key'
-API_EMAIL = 'email'
+API_EMAIL = 'email' # unused as of now
 ZONE_ID = 'zone_id'
-
-RECORD_NAME = 'yourwebsite.com'
-RECORD_TYPE = 'A'
 
 # API Configurations
 APIs = {
@@ -14,8 +11,7 @@ APIs = {
         'cloudflare',
         f'https://api.cloudflare.com/client/v4/zones/{ZONE_ID}/dns_records',
         {
-            'X-Auth-Email': API_EMAIL,
-            'X-Auth-Key': API_KEY,
+            'Authorization': f'Bearer {API_KEY.strip()}',
             'Content-Type': 'application/json'
         }, None),
 

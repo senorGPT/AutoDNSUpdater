@@ -13,8 +13,10 @@ class API:
 
         self.response = None
 
+
     def __str__(self) -> str:
         return f'{self.name}: {self.url}'
+
 
     def get_request(self) -> Dict:
         """
@@ -24,6 +26,7 @@ class API:
         self.response = requests.get(
             self.url, headers=self.headers, params=self.params)
         return self.response.json()
+
 
     def put_request(self, dns_record: DNS_Record) -> int:
         """
